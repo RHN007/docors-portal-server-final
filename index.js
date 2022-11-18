@@ -1,5 +1,6 @@
 const express = require('express');
-// const dotenv = require('dotenv');
+const { MongoClient, ServerApiVersion } = require('mongodb');
+require('dotenv').config()
 const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 9000; 
@@ -8,9 +9,47 @@ const port = process.env.PORT || 9000;
 app.use(cors())
 app.use(express.json())
 
-require('dotenv').config()
+//MongoDb Connection 
 
-app.get('/', (req, res)=> {
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.eekiv4v.mongodb.net/?retryWrites=true&w=majority`;
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+
+
+async function run () {
+        try {
+                const appointmentOptionsCollection = client.db('doctorsPortal').collection('appointmentOptions')
+
+
+                //Loading all data 
+                app.get('/appointmentOptions', async (req, res) => {
+                    const query = {}
+                    const options = await appointmentOptionsCollection.find(query).toArray()
+                    res.send(options)
+                })
+
+
+
+        }
+        finally{
+
+        }
+}
+run().catch(console.log)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+app.get('/', async(req, res)=> {
     res.send('Doctors Server is running')
 })
 
