@@ -3,7 +3,10 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 9000; 
+
+// middle ware 
 app.use(cors())
+app.use(express.json())
 
 require('dotenv').config()
 
@@ -12,5 +15,5 @@ app.get('/', (req, res)=> {
 })
 
 app.listen(port, () => {
-    console.log(`Example app listen on port ${port}`)
+    console.log(`Doctors Portal Running on ${port}`)
 })
